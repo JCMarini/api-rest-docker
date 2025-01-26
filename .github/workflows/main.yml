@@ -19,7 +19,7 @@ jobs:
       - name: Set up Gradle
         uses: gradle/wrapper-validation-action@v1
         with:
-          gradle-version: '7.4'  # Usa la versión de Gradle que necesites
+          gradle-version: 8.12
 
       # Paso 3: Ejecutar Gradle para compilar el proyecto
       - name: Build with Gradle
