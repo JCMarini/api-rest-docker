@@ -14,6 +14,10 @@ jobs:
       - name: Checkout project sources
         uses: actions/checkout@v4
 
+      # Add permision X to gradle wrapper
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
       # Paso 2: Configurar Gradle (instalar Gradle)
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v3
@@ -24,7 +28,7 @@ jobs:
 
       # Paso 3: Ejecutar Gradle para compilar el proyecto
       - name: Build with Gradle
-        run: sudo ./gradlew build
+        run: ./gradlew build
 
       # Paso 4: Configurar Docker Hub (login)
       - name: Log in to Docker Hub
