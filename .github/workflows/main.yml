@@ -3,35 +3,46 @@ name: Build and Push Docker image to Docker Hub
 on:
   push:
     branches:
-      - main
+      - main  # O la rama que desees utilizar
 
 jobs:
   build_and_push:
     runs-on: ubuntu-latest
 
     steps:
+
       # Paso 1: Checkout del código del repositorio
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Paso 2: Configurar Docker Hub (login)
+      # Paso 2: Configurar Gradle (instalar Gradle)
+      - name: Set up Gradle
+        uses: gradle/wrapper-validation-action@v1
+        with:
+          gradle-version: '7.4'  # Usa la versión de Gradle que necesites
+
+      # Paso 3: Ejecutar Gradle para compilar el proyecto
+      - name: Build with Gradle
+        run: ./gradlew build --no-daemon
+
+      # Paso 4: Configurar Docker Hub (login)
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # Paso 3: Construir la imagen Docker
+      # Paso 5: Construir la imagen Docker
       - name: Build Docker image
         run: |
           docker build -t marini89/api-rest-docker:latest .
 
-      # Paso 4: Etiquetar la imagen Docker con el commit SHA
+      # Paso 6: Etiquetar la imagen Docker con el commit SHA
       - name: Tag Docker image with commit SHA
         run: |
           docker tag marini89/api-rest-docker:latest marini89/api-rest-docker:${{ github.sha }}
 
-      # Paso 5: Subir la imagen Docker a Docker Hub
+      # Paso 7: Subir la imagen Docker a Docker Hub
       - name: Push Docker image to Docker Hub
         run: |
           docker push marini89/api-rest-docker:latest
