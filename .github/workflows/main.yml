@@ -10,20 +10,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
       # Paso 1: Checkout del código del repositorio
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Checkout project sources
+        uses: actions/checkout@v4
 
       # Paso 2: Configurar Gradle (instalar Gradle)
       - name: Set up Gradle
-        uses: gradle/wrapper-validation-action@v1
+        uses: gradle/actions/setup-gradle@v3
         with:
-          gradle-version: 8.12
+          build-scan-publish: true
+          build-scan-terms-of-use-url: "https://gradle.com/terms-of-service"
+          build-scan-terms-of-use-agree: "yes"
 
       # Paso 3: Ejecutar Gradle para compilar el proyecto
       - name: Build with Gradle
-        run: ./gradlew build --no-daemon
+        run: ./gradlew build
 
       # Paso 4: Configurar Docker Hub (login)
       - name: Log in to Docker Hub
