@@ -24,7 +24,7 @@ jobs:
 
       # Paso 3: Ejecutar Gradle para compilar el proyecto
       - name: Build with Gradle
-        run: ./gradlew build
+        run: sudo ./gradlew build
 
       # Paso 4: Configurar Docker Hub (login)
       - name: Log in to Docker Hub
