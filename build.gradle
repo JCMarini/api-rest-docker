@@ -44,14 +44,28 @@ sonarqube {
 		property "sonar.sources", project.findProperty("sonar.sources")
 		property "sonar.tests",  project.findProperty("sonar.tests")
 		property("sonar.java.binaries", project.findProperty("sonar.java.binaries"))
-		property("sonar.jacoco.reportPaths", project.findProperty("sonar.jacoco.reportPaths")) //
+		property("sonar.jacoco.reportPaths", project.findProperty("sonar.jacoco.reportPaths"))
 	}
 }
 
+configurations {
+	all {
+		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+	}
+}
+
+
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation('org.springframework.boot:spring-boot-starter') {
+		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+	}
+	implementation 'org.springframework.boot:spring-boot-starter-log4j2'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
+
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 

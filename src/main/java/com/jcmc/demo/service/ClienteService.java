@@ -1,5 +1,6 @@
 package com.jcmc.demo.service;
 
+import com.jcmc.demo.core.Logger;
 import com.jcmc.demo.model.Cliente;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +10,9 @@ import java.util.Optional;
 
 @Service
 public class ClienteService {
+
+    private static final Logger LOG = Logger.getLogger(ClienteService.class);
+
     private List<Cliente> clientes = new ArrayList<>();
 
     // Constructor para agregar algunos clientes por defecto
@@ -19,16 +23,20 @@ public class ClienteService {
 
     // Obtener todos los clientes
     public List<Cliente> obtenerTodos() {
+        LOG.warn("Se regresan todos los registros de clientes", null);
+
         return clientes;
     }
 
     // Obtener un cliente por ID
     public Optional<Cliente> obtenerPorId(Long id) {
+        LOG.info("Se regresan el cliente con id " + id, null);
         return clientes.stream().filter(cliente -> cliente.getId().equals(id)).findFirst();
     }
 
     // Crear un nuevo cliente
     public Cliente crear(Cliente cliente) {
+        LOG.info("Se crea un cliente nuevo con nombre : " + cliente.getNombre(), null);
         clientes.add(cliente);
         return cliente;
     }
@@ -50,6 +58,7 @@ public class ClienteService {
         Optional<Cliente> cliente = obtenerPorId(id);
         if (cliente.isPresent()) {
             clientes.remove(cliente.get());
+            LOG.info(String.format("Se elimina el cliente con id : %d", id), null);
             return true;
         }
         return false;
