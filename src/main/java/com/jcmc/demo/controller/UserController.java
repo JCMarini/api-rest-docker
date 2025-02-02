@@ -3,15 +3,15 @@ package com.jcmc.demo.controller;
 import com.jcmc.demo.core.Logger;
 import com.jcmc.demo.model.AuthRequest;
 import com.jcmc.demo.model.User;
-import com.jcmc.demo.service.ClienteService;
 import com.jcmc.demo.service.JwtService;
 import com.jcmc.demo.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,8 +30,12 @@ public class UserController {
     @Autowired
     private JwtService jwtService;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+
+    private final AuthenticationManager authenticationManager;
+
+    public UserController(AuthenticationManager authenticationManager) {
+        this.authenticationManager = authenticationManager;
+    }
 
     @PostMapping("/addNewUser")
     public String addNewUser(@RequestBody User user) {
@@ -50,20 +54,24 @@ public class UserController {
         return "Welcome to Admin Profile";
     }
 
-    @PostMapping("/generateToken")
-    public String authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
+    @PostMapping("/login")
+    public ResponseEntity<?> authenticateAndGetToken(@RequestBody @Validated AuthRequest authRequest) {
         try {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
-
-            if (authentication.isAuthenticated()) {
-                return jwtService.generateToken(authRequest.getUsername());
-            } else {
-                throw new UsernameNotFoundException("Invalid user request!");
+            // validamos que el usuario y contraseña vengan en el request
+            if (authRequest.getUsername() == null || authRequest.getPassword() == null) {
+                return ResponseEntity.status(400).body("Bad Request, el usuario y contaseña son necesarios");
             }
+            UsernamePasswordAuthenticationToken authenticationToken =
+                    new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword());
+
+            Authentication authentication = authenticationManager.authenticate(authenticationToken);
+
+            String jwt = jwtService.generateToken(authentication.getName());
+
+            return ResponseEntity.ok(jwt);
+
         } catch (Exception ex) {
-            LOG.error(ex.getMessage(), ex);
+            return ResponseEntity.status(401).body("Bad Credentials, el usuario o la contraseña son incorrectos o no existen");
         }
-        return null;
     }
 }
