@@ -1,4 +1,4 @@
-package com.jcmc.demo.core;
+package com.jcmc.demo.core.util;
 
 import org.slf4j.LoggerFactory;
 import java.math.BigInteger;
@@ -59,6 +59,10 @@ public class Logger {
         }
     }
 
+
+    public void info(String message) {
+        log(message, null, Level.INFO);
+    }
 
     public void info(String message, Throwable th) {
         log(message, th, Level.INFO);

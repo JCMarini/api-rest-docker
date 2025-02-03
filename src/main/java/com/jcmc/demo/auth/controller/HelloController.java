@@ -1,4 +1,4 @@
-package com.jcmc.demo.controller;
+package com.jcmc.demo.auth.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

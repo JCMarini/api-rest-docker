@@ -1,4 +1,4 @@
-package com.jcmc.demo.util;
+package com.jcmc.demo.core.util;
 
 import java.net.URLDecoder;
 import java.net.URLEncoder;
