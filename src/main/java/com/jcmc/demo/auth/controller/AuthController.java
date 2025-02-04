@@ -1,8 +1,8 @@
 package com.jcmc.demo.auth.controller;
 
-import com.jcmc.demo.auth.model.AuthRequest;
-import com.jcmc.demo.auth.model.RegisterRequest;
-import com.jcmc.demo.auth.model.TokenResponse;
+import com.jcmc.demo.auth.model.record.AuthRequest;
+import com.jcmc.demo.auth.model.record.RegisterRequest;
+import com.jcmc.demo.auth.model.record.TokenResponse;
 import com.jcmc.demo.auth.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthController {
 

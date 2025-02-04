@@ -19,12 +19,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class AppConfig {
 
     private final UserRepository repository;
+//    private final CustomAuthenticationProvider provider;
 
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> {
             final User user = repository.findByEmail(username)
                     .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
             return org.springframework.security.core.userdetails.User
                     .builder()
                     .username(user.getEmail())
@@ -45,6 +47,16 @@ public class AppConfig {
     public AuthenticationManager authenticationManager(final AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
+
+
+//    @Bean
+//    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+//        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
+//        authenticationManagerBuilder.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
+////        authenticationManagerBuilder.authenticationProvider(new CustomAuthenticationProvider(userDetailsService()));
+//        return authenticationManagerBuilder.build();
+//    }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {

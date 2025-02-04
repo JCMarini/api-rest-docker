@@ -1,4 +1,4 @@
-package com.jcmc.demo.auth.model;
+package com.jcmc.demo.auth.model.record;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

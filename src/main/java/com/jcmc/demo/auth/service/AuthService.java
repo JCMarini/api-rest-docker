@@ -3,10 +3,10 @@ package com.jcmc.demo.auth.service;
 
 import com.jcmc.demo.auth.dao.TokenRepository;
 import com.jcmc.demo.auth.dao.UserRepository;
-import com.jcmc.demo.auth.model.AuthRequest;
-import com.jcmc.demo.auth.model.RegisterRequest;
+import com.jcmc.demo.auth.model.record.AuthRequest;
+import com.jcmc.demo.auth.model.record.RegisterRequest;
 import com.jcmc.demo.auth.model.Token;
-import com.jcmc.demo.auth.model.TokenResponse;
+import com.jcmc.demo.auth.model.record.TokenResponse;
 import com.jcmc.demo.auth.model.User;
 import com.jcmc.demo.core.util.Logger;
 import lombok.RequiredArgsConstructor;
