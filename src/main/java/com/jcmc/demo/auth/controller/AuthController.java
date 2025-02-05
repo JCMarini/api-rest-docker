@@ -1,8 +1,8 @@
 package com.jcmc.demo.auth.controller;
 
-import com.jcmc.demo.auth.model.record.AuthRequest;
-import com.jcmc.demo.auth.model.record.RegisterRequest;
-import com.jcmc.demo.auth.model.record.TokenResponse;
+import com.jcmc.demo.auth.entity.AuthRequest;
+import com.jcmc.demo.auth.entity.RegisterRequest;
+import com.jcmc.demo.auth.entity.TokenResponse;
 import com.jcmc.demo.auth.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;

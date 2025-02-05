@@ -3,10 +3,10 @@ package com.jcmc.demo.auth.service;
 
 import com.jcmc.demo.auth.dao.TokenRepository;
 import com.jcmc.demo.auth.dao.UserRepository;
-import com.jcmc.demo.auth.model.record.AuthRequest;
-import com.jcmc.demo.auth.model.record.RegisterRequest;
+import com.jcmc.demo.auth.entity.AuthRequest;
+import com.jcmc.demo.auth.entity.RegisterRequest;
 import com.jcmc.demo.auth.model.Token;
-import com.jcmc.demo.auth.model.record.TokenResponse;
+import com.jcmc.demo.auth.entity.TokenResponse;
 import com.jcmc.demo.auth.model.User;
 import com.jcmc.demo.core.util.Logger;
 import lombok.RequiredArgsConstructor;
@@ -111,7 +111,7 @@ public class AuthService {
     }
 
     private boolean revokeAllUserTokens(final User user) {
-        final List<Token> validUserTokens = tokenRepository.findAllValidTokenByUser(user.getId_user());
+        final List<Token> validUserTokens = tokenRepository.findAllValidTokenByUser(user.getIdUsuario());
         if (!validUserTokens.isEmpty()) {
             validUserTokens.forEach(token -> {
                 token.setIsExpired(true);

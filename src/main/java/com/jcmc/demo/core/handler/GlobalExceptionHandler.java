@@ -1,6 +1,6 @@
 package com.jcmc.demo.core.handler;
 
-import com.jcmc.demo.auth.model.record.ErrorResponse;
+import com.jcmc.demo.auth.entity.ErrorResponse;
 import com.jcmc.demo.core.util.Logger;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;

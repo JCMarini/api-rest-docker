@@ -1,0 +1,65 @@
+spring:
+  application:
+    name: api-rest-docker
+
+  main:
+    allow:
+      circular:
+        references: true
+#    Configuracion webflux
+#    web-application-type: reactive
+#    allow-bean-definition-overriding: true
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/mysql
+    username: appdemo
+    password: mysql1234
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    open-in-view: false
+
+  redis:
+    host: localhost
+    port: 6379
+
+#  cloud:
+#    gateway:
+#      routes:
+#        - id: route1
+#          uri: http://localhost:8080
+#          predicates:
+#            - Path=/api/**
+#          filters:
+#            - StripPrefix=1
+#            - name: RequestRateLimiter
+#              args:
+#                redis-rate-limiter.replenishRate: 2
+#                redis-rate-limiter.burstCapacity: 2
+#                redis-rate-limiter.requestedTokens: 1
+#                key-resolver: "#{@userKeyResolver}"
+#    config:
+#      enabled: false
+
+server:
+  port: 8080
+  error:
+    whitelabel:
+      enabled: false
+
+application:
+  security:
+    jwt:
+      secret-key: 3cfa76ef14937c1c0ea519f8fc057a80fcd04a7420f8e8bcd0a7567c272e007b
+      expiration: 180000
+      refresh-token:
+        expiration: 300000
+
+management:
+  health:
+    redis:
+      enabled: true

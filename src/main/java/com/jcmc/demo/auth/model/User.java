@@ -9,6 +9,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Cleanup;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -24,7 +25,8 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id_user;
+    @Column(name = "id_user")
+    private int idUsuario;
 
     @Column(nullable = false)
     private String name;
@@ -34,9 +36,6 @@ public class User {
 
     @Column(nullable = false)
     private String password;
-//
-//    @Column(nullable = false)
-//    private String roles;
 
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;

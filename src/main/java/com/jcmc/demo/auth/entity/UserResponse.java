@@ -1,4 +1,4 @@
-package com.jcmc.demo.auth.model.record;
+package com.jcmc.demo.auth.entity;
 
 
 public record UserResponse(

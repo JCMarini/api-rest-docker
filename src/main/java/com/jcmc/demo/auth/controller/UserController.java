@@ -1,7 +1,7 @@
 package com.jcmc.demo.auth.controller;
 
 import com.jcmc.demo.auth.dao.UserRepository;
-import com.jcmc.demo.auth.model.record.UserResponse;
+import com.jcmc.demo.auth.entity.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

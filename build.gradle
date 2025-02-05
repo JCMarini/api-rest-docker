@@ -50,16 +50,25 @@ sonarqube {
 
 configurations {
 	all {
+		// Exclusion de loggin para no utilizar Log4j
 		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
 	}
 }
 
 
+dependencyManagement {
+	imports {
+		mavenBom 'org.springframework.cloud:spring-cloud-dependencies:2024.0.0'
+	}
+}
+
 dependencies {
 
+	// Lombok
 	compileOnly 'org.projectlombok:lombok:1.18.24'
 	annotationProcessor 'org.projectlombok:lombok:1.18.24'
 
+	// Spring Boot 3.4.2
 	implementation('org.springframework.boot:spring-boot-starter:3.4.2') {
 		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
 	}
@@ -67,8 +76,21 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web:3.4.2'
 	implementation 'org.springframework.boot:spring-boot-starter-security:3.4.2'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.4.2'
+
+//	implementation 'org.springframework.cloud:spring-cloud-starter-gateway:4.2.0'
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis-reactive:3.4.2'
+//	implementation 'org.springframework.boot:spring-boot-starter-webflux:3.4.2'
+
+	//	Swagger y OpenAPI
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.4'
+
+	// Hibernate
 	implementation 'org.hibernate.orm:hibernate-core:6.6.5.Final'
+
+	// Mysql
 	implementation 'com.mysql:mysql-connector-j:9.2.0'
+
+	// JWT
 	implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
 	implementation 'io.jsonwebtoken:jjwt-impl:0.12.6'
 	implementation 'io.jsonwebtoken:jjwt-jackson:0.12.6'
@@ -77,6 +99,7 @@ dependencies {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
 
+	// Junit 5
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
@@ -91,4 +114,5 @@ task cleanLogs(type: Delete) {
 	delete 'logs/'
 }
 
+build.dependsOn clean
 clean.dependsOn cleanLogs
