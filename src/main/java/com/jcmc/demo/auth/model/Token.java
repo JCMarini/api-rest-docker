@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+//import java.util.Date;
 
 @Data
 @Builder
@@ -34,6 +35,9 @@ public class Token implements Serializable {
 
     @Column(nullable = false, name = "expired")
     private Boolean isExpired;
+//
+//    @Column(nullable = false)
+//    private Date fecha;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_user")

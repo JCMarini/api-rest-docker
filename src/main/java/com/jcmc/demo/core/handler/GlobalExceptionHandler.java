@@ -2,10 +2,12 @@ package com.jcmc.demo.core.handler;
 
 import com.jcmc.demo.auth.entity.ErrorResponse;
 import com.jcmc.demo.core.util.Logger;
+import com.jcmc.demo.core.util.UuidUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -14,9 +16,6 @@ import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @ControllerAdvice()
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
@@ -30,7 +29,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 HttpStatus.UNAUTHORIZED.value(),
                 "error",
                 "Token expired",
-                getTimeStamp()
+                UuidUtil.getUUID()
         );
         L0G.warn(ex.getMessage(), null);
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
@@ -43,7 +42,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 HttpStatus.UNAUTHORIZED.value(),
                 "error",
                 "Authorization Denied",
-                getTimeStamp()
+                UuidUtil.getUUID()
         );
         L0G.warn(ex.getMessage(), null);
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
@@ -56,7 +55,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 HttpStatus.BAD_REQUEST.value(),
                 "error",
                 "Token Malformed",
-                getTimeStamp()
+                UuidUtil.getUUID()
         );
         L0G.warn(ex.getMessage(), null);
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
@@ -69,7 +68,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 HttpStatus.BAD_REQUEST.value(),
                 "error",
                 "Unsupported JWT algorithm",
-                getTimeStamp()
+                UuidUtil.getUUID()
         );
         L0G.warn(ex.getMessage(), null);
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
@@ -82,7 +81,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 HttpStatus.BAD_REQUEST.value(),
                 "error",
                 "Invalid token",
-                getTimeStamp()
+                UuidUtil.getUUID()
         );
         L0G.warn(ex.getMessage(), null);
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
@@ -95,7 +94,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 HttpStatus.FORBIDDEN.value(),
                 "error",
                 "Forbidden",
-                getTimeStamp()
+                UuidUtil.getUUID()
         );
         L0G.warn(ex.getMessage(), null);
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
@@ -109,9 +108,22 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 HttpStatus.BAD_REQUEST.value(),
                 "error",
                 "Bad credentials",
-                getTimeStamp()
+                UuidUtil.getUUID()
         );
         L0G.warn(ex.getMessage(), null);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    // Manejar la excepcion de
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorResponse> handlerDataIntegrityViolationException(DataIntegrityViolationException ex) {
+        ErrorResponse response = new ErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                "error",
+                "No se puedo realizar esta accion",
+                UuidUtil.getUUID()
+        );
+        L0G.warn(ex.getMessage(), ex);
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
@@ -122,17 +134,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 "error",
                 "Internal server error",
-                getTimeStamp()
+                UuidUtil.getUUID()
         );
         L0G.error(ex.getCause().getMessage(), ex);
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
-
-    private String getTimeStamp() {
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        return now.format(formatter);
-    }
-
 }
