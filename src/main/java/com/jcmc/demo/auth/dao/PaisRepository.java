@@ -1,7 +1,0 @@
-package com.jcmc.demo.auth.dao;
-
-import com.jcmc.demo.auth.model.Pais;
-import org.springframework.data.jpa.repository.JpaRepository;
-
-public interface PaisRepository extends JpaRepository<Pais, Long> {
-}

@@ -1,5 +1,6 @@
-package com.jcmc.demo.auth.model;
+package com.jcmc.demo.geografia.model;
 
+import com.jcmc.demo.auth.model.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

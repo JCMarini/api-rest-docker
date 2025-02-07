@@ -1,7 +1,7 @@
-package com.jcmc.demo.auth.service;
+package com.jcmc.demo.geografia.service;
 
-import com.jcmc.demo.auth.dao.PaisRepository;
-import com.jcmc.demo.auth.model.Pais;
+import com.jcmc.demo.geografia.dao.PaisRepository;
+import com.jcmc.demo.geografia.model.Pais;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

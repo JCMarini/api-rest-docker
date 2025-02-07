@@ -1,4 +1,4 @@
-package com.jcmc.demo.auth.entity;
+package com.jcmc.demo.geografia.entity;
 
 import java.io.Serializable;
 

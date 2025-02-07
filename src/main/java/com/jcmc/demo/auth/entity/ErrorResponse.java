@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public record ErrorResponse(
         int status,
-        String error,
+//        String error,
         String message,
         String uuid
 ) implements Serializable {

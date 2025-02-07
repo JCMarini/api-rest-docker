@@ -15,6 +15,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 @Configuration
 @RequiredArgsConstructor
 @EnableMethodSecurity
@@ -63,5 +66,16 @@ public class AppConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean("hostName")
+    public String getHostName() {
+        try {
+            // Obtener el hostName
+            InetAddress inetAddress = InetAddress.getLocalHost();
+            return inetAddress.getHostName();
+        } catch (UnknownHostException e) {
+            return null;
+        }
     }
 }

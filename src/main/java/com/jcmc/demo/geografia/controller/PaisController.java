@@ -1,8 +1,8 @@
-package com.jcmc.demo.auth.controller;
+package com.jcmc.demo.geografia.controller;
 
-import com.jcmc.demo.auth.entity.PaisResponse;
-import com.jcmc.demo.auth.model.Pais;
-import com.jcmc.demo.auth.service.PaisService;
+import com.jcmc.demo.geografia.entity.PaisResponse;
+import com.jcmc.demo.geografia.model.Pais;
+import com.jcmc.demo.geografia.service.PaisService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,7 +29,9 @@ public class PaisController {
         if (paisService.savePais(pais) != null) {
             pais = paisService.savePais(pais);
             PaisResponse response =
-                    new PaisResponse(pais.getIdPais(), pais.getPais(), pais.getEstatus());
+                    new PaisResponse(pais.getIdPais(),
+                            pais.getPais(),
+                            pais.getEstatus());
             return ResponseEntity.ok(response);
         }
         return ResponseEntity.internalServerError().build();
@@ -39,7 +41,9 @@ public class PaisController {
     @GetMapping
     public ResponseEntity<List<PaisResponse>> getPaises() {
         List<PaisResponse> response = paisService.getPaises().stream()
-                .map(pais -> new PaisResponse(pais.getIdPais(), pais.getPais(), pais.getEstatus()))
+                .map(pais -> new PaisResponse(pais.getIdPais(),
+                        pais.getPais(),
+                        pais.getEstatus()))
                 .toList();
 
         return ResponseEntity.ok(response);
@@ -51,7 +55,9 @@ public class PaisController {
         Optional<Pais> pais = paisService.getPaisById(id);
         if (pais.isPresent()) {
             PaisResponse response =
-                    new PaisResponse(pais.get().getIdPais(), pais.get().getPais(), pais.get().getEstatus());
+                    new PaisResponse(pais.get().getIdPais(),
+                            pais.get().getPais(),
+                            pais.get().getEstatus());
             return ResponseEntity.ok(response);
         }
 

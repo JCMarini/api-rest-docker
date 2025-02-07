@@ -1,31 +1,40 @@
 package com.jcmc.demo.core.util;
 
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
-import static java.net.InetAddress.getLocalHost;
-
+@Component
 public class UuidUtil {
 
-    private static final Logger LOG = Logger.getLogger(UuidUtil.class);
+    @Qualifier("hostName")
+    private static String hostName;
+
+    public UuidUtil(String hostName) {
+        this.hostName = hostName;
+    }
 
     public static String getUUID() {
         StringBuilder sb = new StringBuilder();
         SimpleDateFormat sdf = new SimpleDateFormat(DateUtil.FORMAT_YYYYMMDDHHMMSSSS);
-
-        String idNode = StringUtil.EMPTY_STRING;
-        try {
-            String addressHost = getLocalHost().getHostAddress();
-            String[] splitAdress
-                    = addressHost.split(StringUtil.concat(
-                    StringUtil.BACKSLASH_STRING,
-                    StringUtil.PERIOD_STRING));
-            idNode = splitAdress[3];
-        } catch (Exception ex) {
-            LOG.error( "Host Not Found", ex);
+        String uuid = UUID.randomUUID().toString();
+        if (hostName != null) {
+            return sb.append(hostName)
+                    .append(StringUtil.DASH_STRING)
+                    .append(uuid)
+                    .append(StringUtil.DASH_STRING)
+                    .append(sdf.format(new Date()))
+                    .toString();
         }
-        String date = sdf.format(new Date());
-        sb.append(idNode).append(StringUtil.DASH_STRING).append(date);
-        return sb.toString();
+
+        return sb.append(sdf.format(new Date()))
+                .append(StringUtil.DASH_STRING)
+                .append(uuid)
+                .append(StringUtil.DASH_STRING)
+                .append(sdf.format(new Date()))
+                .toString();
     }
 }
