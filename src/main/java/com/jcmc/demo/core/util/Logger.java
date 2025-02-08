@@ -1,18 +1,18 @@
 package com.jcmc.demo.core.util;
 
+import com.jcmc.demo.auth.model.User;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
+
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 import java.util.UUID;
 
 public class Logger {
 
     private static final Map<Class, Logger> LOGGERS;
     private final org.slf4j.Logger logger;
-    private final Random random;
-    private static final String EID_PATTERN = "%d";
 
     private enum Level {
         INFO, WARN, DEBUG, ERROR, FATAL
@@ -24,7 +24,6 @@ public class Logger {
 
     private Logger(org.slf4j.Logger logger) {
         this.logger = logger;
-        this.random = new Random();
     }
 
     public static <T> Logger getLogger(Class<T> clazz) {
@@ -79,4 +78,5 @@ public class Logger {
     public void error(String message, Throwable th) {
         log(message, th, Level.ERROR);
     }
+
 }

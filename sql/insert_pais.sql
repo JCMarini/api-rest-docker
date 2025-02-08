@@ -1,0 +1,1 @@
+insert into paises (id_pais, pais, fecha, id_user, estatus) values(1,'MEXICO', sysdate(), 1, 1);

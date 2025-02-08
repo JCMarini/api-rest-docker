@@ -2,6 +2,7 @@ package com.jcmc.demo.core.filter;
 
 import com.jcmc.demo.auth.dao.TokenRepository;
 import com.jcmc.demo.auth.dao.UserRepository;
+import com.jcmc.demo.auth.model.Token;
 import com.jcmc.demo.auth.model.User;
 import com.jcmc.demo.auth.service.JwtService;
 import jakarta.servlet.FilterChain;
@@ -9,6 +10,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
@@ -69,15 +71,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
 
             final UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
-            final boolean isTokenExpiredOrRevoked = tokenRepository.findByToken(jwt)
-                    .map(token -> !token.getIsExpired() && !token.getIsRevoked())
-                    .orElse(false);
+            Optional<Token> tokenBase = tokenRepository.findByToken(jwt);
 
+            if (tokenBase.isPresent()) {
+                final boolean isTokenExpiredOrRevoked = tokenBase
+                        .map(token -> !token.getIsExpired() && !token.getIsRevoked())
+                        .orElse(false);
 
-            if (isTokenExpiredOrRevoked) {
+                // Guardar en MDC para visualizar en logs.
+                MDC.put("usuario", userDetails.getUsername());
+                MDC.put("id_user", String.valueOf(tokenBase.get().getUser().getIdUsuario()));
                 final Optional<User> user = userRepository.findByEmail(userEmail);
 
-                if (user.isPresent()) {
+                if (user.isPresent() && isTokenExpiredOrRevoked) {
                     final boolean isTokenValid = jwtService.isTokenValid(jwt, user.get());
 
                     if (isTokenValid) {
@@ -93,7 +99,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     }
                 }
             }
-
         } catch (Exception ex) {
             resolver.resolveException(request, response, null, ex);
             return;

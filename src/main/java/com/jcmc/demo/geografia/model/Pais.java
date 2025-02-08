@@ -27,12 +27,19 @@ import java.util.Date;
 @Table(name = "paises")
 public class Pais implements Serializable {
 
+    public Pais(Integer idPais, String pais, Integer estatus) {
+        this.idPais = idPais;
+        this.pais = pais;
+        this.estatus = estatus;
+        this.fecha = new Date();
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_pais")
-    private Long idPais;
+    private Integer idPais;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String pais;
 
     @Column(nullable = false)

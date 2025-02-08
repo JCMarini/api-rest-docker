@@ -1,5 +1,7 @@
 package com.jcmc.demo.geografia.service;
 
+import com.jcmc.demo.auth.model.User;
+import com.jcmc.demo.core.util.SessionUtil;
 import com.jcmc.demo.geografia.dao.PaisRepository;
 import com.jcmc.demo.geografia.model.Pais;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +18,17 @@ public class PaisService {
 
     // Crear o actualizar un pais
     public Pais savePais(Pais pais) {
-        return paisRepository.save(pais);
+        return paisRepository.savePais(pais);
+    }
+
+    public Pais updatePais(Pais pais) {
+        User user = SessionUtil.getUser();
+        Integer rows = paisRepository.updatePais(pais.getIdPais(),
+                pais.getPais(), pais.getEstatus(), user.getIdUsuario());
+        if (rows > 0) {
+            return pais;
+        }
+        return null;
     }
 
     // Obtener todos los paises

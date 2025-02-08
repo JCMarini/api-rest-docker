@@ -1,5 +1,6 @@
 package com.jcmc.demo.geografia.dao;
 
+import com.jcmc.demo.core.util.SessionUtil;
 import com.jcmc.demo.geografia.model.Estado;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,7 +17,13 @@ public interface EstadoRespository extends JpaRepository<Estado, Long> {
             FROM estados e \s
             inner join paises p \s
             on e.id_pais = p.id_pais \s 
-            WHERE e.id_pais = :id""", nativeQuery=true)
+            WHERE e.id_pais = :id""", nativeQuery = true)
     List<Estado> getEstadosByPais(@Param("id") Long id);
+
+
+     default Estado saveEstado(Estado estado) {
+        estado.setUser(SessionUtil.getUser());
+        return this.save(estado);
+    }
 
 }

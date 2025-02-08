@@ -1,7 +1,6 @@
 package com.jcmc.demo.geografia.controller;
 
-import com.jcmc.demo.geografia.entity.EstadoRequest;
-import com.jcmc.demo.geografia.entity.EstadoResponse;
+import com.jcmc.demo.geografia.entity.EstadoEntity;
 import com.jcmc.demo.geografia.model.Estado;
 import com.jcmc.demo.geografia.service.EstadoService;
 import lombok.RequiredArgsConstructor;
@@ -27,14 +26,14 @@ public class EstadoController {
 
     // Crear o actualizar un estado
     @PostMapping
-    public ResponseEntity<EstadoResponse> saveEstado(@RequestBody EstadoRequest estadoRequest) {
-        Estado estado = new Estado(estadoRequest.id_pais(), estadoRequest.id_estado(),
-                estadoRequest.estado(), estadoRequest.estatus());
+    public ResponseEntity<EstadoEntity> saveEstado(@RequestBody EstadoEntity request) {
+        Estado estado = new Estado(request.id_pais(), request.id_estado(),
+                request.estado(), request.estatus());
 
         if (estadoService.saveEstado(estado) != null) {
             estado = estadoService.saveEstado(estado);
-            EstadoResponse response =
-                    new EstadoResponse(estado.getPais().getIdPais(),
+            EstadoEntity response =
+                    new EstadoEntity(estado.getPais().getIdPais(),
                             estado.getIdEstado(),
                             estado.getEstado(),
                             estado.getEstatus());
@@ -45,14 +44,14 @@ public class EstadoController {
 
     // Crear o actualizar un estado
     @PutMapping
-    public ResponseEntity<EstadoResponse> updateEstado(@RequestBody EstadoRequest estadoRequest) {
+    public ResponseEntity<EstadoEntity> updateEstado(@RequestBody EstadoEntity estadoRequest) {
         Estado estado = new Estado(estadoRequest.id_pais(), estadoRequest.id_estado(),
                 estadoRequest.estado(), estadoRequest.estatus());
 
         if (estadoService.saveEstado(estado) != null) {
             estado = estadoService.saveEstado(estado);
-            EstadoResponse response =
-                    new EstadoResponse(estado.getPais().getIdPais(),
+            EstadoEntity response =
+                    new EstadoEntity(estado.getPais().getIdPais(),
                             estado.getIdEstado(),
                             estado.getEstado(),
                             estado.getEstatus());
@@ -64,9 +63,9 @@ public class EstadoController {
 
     // Obtener todos los estados
     @GetMapping
-    public ResponseEntity<List<EstadoResponse>> getEstados() {
-        List<EstadoResponse> response = estadoService.getEstados().stream()
-                .map(estado -> new EstadoResponse(estado.getPais().getIdPais(),
+    public ResponseEntity<List<EstadoEntity>> getEstados() {
+        List<EstadoEntity> response = estadoService.getEstados().stream()
+                .map(estado -> new EstadoEntity(estado.getPais().getIdPais(),
                         estado.getIdEstado(),
                         estado.getEstado(),
                         estado.getEstatus()))
@@ -77,9 +76,9 @@ public class EstadoController {
 
     // Obtener todos los estados
     @GetMapping("/pais/{id}")
-    public ResponseEntity<List<EstadoResponse>> getEstadosByIdPais(@PathVariable Long id) {
-        List<EstadoResponse> response = estadoService.getEstadoByIdPais(id).stream()
-                .map(estado -> new EstadoResponse(estado.getPais().getIdPais(),
+    public ResponseEntity<List<EstadoEntity>> getEstadosByIdPais(@PathVariable Long id) {
+        List<EstadoEntity> response = estadoService.getEstadoByIdPais(id).stream()
+                .map(estado -> new EstadoEntity(estado.getPais().getIdPais(),
                         estado.getIdEstado(),
                         estado.getEstado(),
                         estado.getEstatus()))
@@ -91,11 +90,11 @@ public class EstadoController {
 
     // Obtener los estados por ID
     @GetMapping("/{id}")
-    public ResponseEntity<EstadoResponse> getEstadoByIdEstado(@PathVariable Long id) {
+    public ResponseEntity<EstadoEntity> getEstadoByIdEstado(@PathVariable Long id) {
         Optional<Estado> estado = estadoService.getEstadoByIdEstado(id);
         if (estado.isPresent()) {
-            EstadoResponse response =
-                    new EstadoResponse(estado.get().getPais().getIdPais(),
+            EstadoEntity response =
+                    new EstadoEntity(estado.get().getPais().getIdPais(),
                             estado.get().getIdEstado(),
                             estado.get().getEstado(),
                             estado.get().getEstatus());

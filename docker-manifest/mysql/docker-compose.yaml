@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0           # Usamos la imagen oficial de MySQL 8.0
+    container_name: mysql-db    # Nombre del contenedor
+    environment:
+      MYSQL_ROOT_PASSWORD: root1234  # Contraseña para el usuario root
+      MYSQL_DATABASE: mysql          # Base de datos inicial que se creará al iniciar el contenedor
+      MYSQL_USER: appdemo            # Nombre de usuario adicional
+      MYSQL_PASSWORD: mysql1234      # Contraseña para el usuario adicional
+    ports:
+      - "3306:3306"             # Mapea el puerto 3306 del contenedor al puerto 3306 de la máquina host
+    volumes:
+      - mysql-data:/var/lib/mysql  # Persistencia de los datos de MySQL
+    networks:
+      - mysql-network            # Conectar a una red personalizada para MySQL
+
+volumes:
+  mysql-data:
+    driver: local               # Persistencia de datos en volumen
+     
+networks:
+  mysql-network:
+    driver: bridge              # Configuramos una red en modo "bridge"

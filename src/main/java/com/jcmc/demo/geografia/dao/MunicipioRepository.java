@@ -1,5 +1,6 @@
 package com.jcmc.demo.geografia.dao;
 
+import com.jcmc.demo.core.util.SessionUtil;
 import com.jcmc.demo.geografia.model.Municipio;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,4 +20,11 @@ public interface MunicipioRepository extends JpaRepository<Municipio, Long> {
             order by id_municipio asc \s
             """, nativeQuery=true)
     List<Municipio> getMunicipiosByEstadoId(Long id);
+
+
+     default Municipio saveMunicipio(Municipio municipio){
+        municipio.setUser(SessionUtil.getUser());
+        return save(municipio);
+    }
+
 }

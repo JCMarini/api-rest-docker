@@ -4,7 +4,7 @@
     <Appenders>
         <!-- Appender para mostrar logs en la consola (solo errores y advertencias) -->
         <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %-5p [%t] %c{1} - %m%n" />
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%X{usuario}] %-5level %logger{36} - %msg%n" />
             <!-- Configuración para solo mostrar logs de ERROR y WARN en consola -->
             <ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY" />
         </Console>
@@ -13,7 +13,7 @@
         <RollingFile name="RollingFile" fileName="logs/app.log"
                      filePattern="logs/app-%d{yyyy-MM-dd}.log">
             <!-- Layout para el formato de los logs -->
-            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %-5p [%t] %c{1} - %m%n" />
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%X{usuario}] %-5p [%t] %c{1} - %m%n" />
 
             <!-- Políticas de rollover -->
             <Policies>

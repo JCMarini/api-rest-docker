@@ -27,19 +27,13 @@ import java.util.Date;
 @Table(name = "estados")
 public class Estado implements Serializable {
 
-    public Estado(Long idPais, Long idEstado, String estado, Integer estatus) {
+    public Estado(Integer idPais, Long idEstado, String estado, Integer estatus) {
         Pais pais = new Pais();
         pais.setIdPais(idPais);
-
-        // falta obtener el usuario de algun lugar para poder ingresarlo a la base de datos.
-        User user = new User();
-        user.setIdUsuario(1);
-
         this.pais = pais;
         this.idEstado = idEstado;
         this.estado = estado;
         this.estatus = estatus;
-        this.user = user;
         this.fecha = new Date();
     }
 
@@ -52,7 +46,7 @@ public class Estado implements Serializable {
     @JoinColumn(name = "id_pais", nullable = false)
     private Pais pais;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String estado;
 
     @Column(nullable = false)

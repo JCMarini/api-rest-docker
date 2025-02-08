@@ -27,21 +27,17 @@ import java.util.Date;
 @Table(name = "municipios")
 public class Municipio implements Serializable {
 
-    public Municipio(Long idPais, Long idEstado, Long idMunicipio, String municipio, Integer estatus){
+    public Municipio(Integer idPais, Long idEstado, Long idMunicipio, String municipio, Integer estatus){
         Pais pais = new Pais();
         pais.setIdPais(idPais);
-
         Estado estado = new Estado();
         estado.setIdEstado(idEstado);
 
-        User user = new User();
-        user.setIdUsuario(1);
-
-        this.pais = pais;
+        this.idMunicipio = idMunicipio;
         this.estado = estado;
+        this.pais = pais;
         this.municipio = municipio;
         this.estatus = estatus;
-        this.user = user;
         this.fecha = new Date();
     }
 

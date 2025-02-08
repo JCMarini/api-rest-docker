@@ -19,7 +19,7 @@ public class MunicipioService {
 
     // Crear o actualizar un estamunicipiodo
     public Municipio saveMunicipio(Municipio municipio) {
-        return municipioRepository.save(municipio);
+        return municipioRepository.saveMunicipio(municipio);
     }
 
     // Obtener todos los municipio
