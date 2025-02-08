@@ -2,6 +2,7 @@ package com.jcmc.demo.core.handler;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.jcmc.demo.auth.entity.ErrorResponse;
+import com.jcmc.demo.core.support.MessagesProperties;
 import com.jcmc.demo.core.util.Logger;
 import com.jcmc.demo.core.util.UuidUtil;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -9,6 +10,7 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import jakarta.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +28,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice()
 public class GlobalExceptionHandler {
 
+    @Autowired
+    private MessagesProperties messagesProperties;
+
     private static final Logger L0G = Logger.getLogger(GlobalExceptionHandler.class);
 
     // Manejar la excepción ExpiredJwtException
@@ -33,7 +38,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleExpiredJwtException(ExpiredJwtException ex) {
         ErrorResponse response = new ErrorResponse(
                 HttpStatus.UNAUTHORIZED.value(),
-                "Token expired",
+                messagesProperties.msgErrorTokenExpired,
                 UuidUtil.getUUID()
         );
         L0G.warn(ex.getMessage(), null);
@@ -45,7 +50,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handlerAuthorizationDeniedException(AuthorizationDeniedException ex) {
         ErrorResponse response = new ErrorResponse(
                 HttpStatus.UNAUTHORIZED.value(),
-                "Authorization Denied",
+                messagesProperties.msgErrorAuthorizationDenied,
                 UuidUtil.getUUID()
         );
         L0G.warn(ex.getMessage(), null);
@@ -57,7 +62,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleMalformedJwtException(MalformedJwtException ex) {
         ErrorResponse response = new ErrorResponse(
                 HttpStatus.BAD_REQUEST.value(),
-                "Token Malformed",
+                messagesProperties.msgErrorTokenMalformed,
                 UuidUtil.getUUID()
         );
         L0G.warn(ex.getMessage(), null);
@@ -69,7 +74,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleUnsupportedJwtException(UnsupportedJwtException ex) {
         ErrorResponse response = new ErrorResponse(
                 HttpStatus.BAD_REQUEST.value(),
-                "Unsupported JWT algorithm",
+                messagesProperties.msgErrorJwtUnsuportedAlgorithm,
                 UuidUtil.getUUID()
         );
         L0G.warn(ex.getMessage(), null);
@@ -81,7 +86,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleJwtException(JwtException ex) {
         ErrorResponse response = new ErrorResponse(
                 HttpStatus.BAD_REQUEST.value(),
-                "Invalid token",
+                messagesProperties.msgErrorInvalidToken,
                 UuidUtil.getUUID()
         );
         L0G.warn(ex.getMessage(), null);
@@ -106,7 +111,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handlerBadCredentialsException(BadCredentialsException ex) {
         ErrorResponse response = new ErrorResponse(
                 HttpStatus.BAD_REQUEST.value(),
-                "Bad credentials",
+                messagesProperties.msgErrorBadCredentials,
                 UuidUtil.getUUID()
         );
         L0G.warn(ex.getMessage(), null);

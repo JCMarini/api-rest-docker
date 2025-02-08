@@ -5,6 +5,7 @@ import com.jcmc.demo.auth.dao.UserRepository;
 import com.jcmc.demo.auth.model.Token;
 import com.jcmc.demo.auth.model.User;
 import com.jcmc.demo.auth.service.JwtService;
+import com.jcmc.demo.core.support.MessagesProperties;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -42,6 +43,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private HandlerExceptionResolver resolver;
 
+    @Autowired
+    private MessagesProperties messagesProperties;
+
 
     @Override
     protected void doFilterInternal(
@@ -59,7 +63,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
             if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-                throw new AuthorizationDeniedException("No existe el bearer token");
+                throw new AuthorizationDeniedException(messagesProperties.msgErrorBearerNotExist);
             }
 
 
@@ -67,7 +71,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             final String userEmail = jwtService.extractUsername(jwt);
             final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if (userEmail == null || authentication != null) {
-                throw new AuthorizationDeniedException("No existe el usuario o la contraseña");
+                throw new AuthorizationDeniedException(messagesProperties.msgErrorUserNotExist);
             }
 
             final UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
@@ -79,7 +83,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         .orElse(false);
 
                 // Guardar en MDC para visualizar en logs.
-                MDC.put("usuario", userDetails.getUsername());
+                MDC.put("user_name", userDetails.getUsername());
                 MDC.put("id_user", String.valueOf(tokenBase.get().getUser().getIdUsuario()));
                 final Optional<User> user = userRepository.findByEmail(userEmail);
 

@@ -28,6 +28,9 @@ spring:
     port: 6379
     timeout: 2000
 
+  messages:
+    basename: messages
+
 #  cloud:
 #    gateway:
 #      routes:

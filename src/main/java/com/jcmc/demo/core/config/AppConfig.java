@@ -4,7 +4,9 @@ import com.jcmc.demo.auth.dao.UserRepository;
 import com.jcmc.demo.auth.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -21,10 +23,12 @@ import java.net.UnknownHostException;
 @Configuration
 @RequiredArgsConstructor
 @EnableMethodSecurity
+@ComponentScan(basePackages = {AppConfig.BASE_PACKAGE})
+@PropertySource("classpath:messages.properties")
 public class AppConfig {
 
     private final UserRepository repository;
-//    private final CustomAuthenticationProvider provider;
+    public static final String BASE_PACKAGE = "com.jcmc.demo";
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -54,20 +58,12 @@ public class AppConfig {
     }
 
 
-//    @Bean
-//    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-//        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
-//        authenticationManagerBuilder.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
-////        authenticationManagerBuilder.authenticationProvider(new CustomAuthenticationProvider(userDetailsService()));
-//        return authenticationManagerBuilder.build();
-//    }
-
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    // bean para obtener el hostname para mostrarlo en logs
     @Bean("hostName")
     public String getHostName() {
         try {
