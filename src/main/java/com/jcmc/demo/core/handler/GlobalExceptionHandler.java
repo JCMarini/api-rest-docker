@@ -4,11 +4,14 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.jcmc.demo.auth.entity.ErrorResponse;
 import com.jcmc.demo.core.support.MessagesProperties;
 import com.jcmc.demo.core.util.Logger;
+import com.jcmc.demo.core.util.StringUtil;
 import com.jcmc.demo.core.util.UuidUtil;
+import io.github.resilience4j.ratelimiter.RequestNotPermitted;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -214,5 +217,19 @@ public class GlobalExceptionHandler {
 
         L0G.warn(ex.getMessage(), null);
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(RequestNotPermitted.class)
+    public ResponseEntity<Object> handleRequestNotPermitted(RequestNotPermitted ex, HttpServletRequest request) {
+        String message = StringUtil.concat("Request to path : ", request.getRequestURI()
+                , " is blocked due to rate-limiting ex : ", ex.getMessage());
+
+        ErrorResponse response = new ErrorResponse(
+                HttpStatus.TOO_MANY_REQUESTS.value(),
+                message,
+                UuidUtil.getUUID()
+        );
+        L0G.warn(message, null);
+        return new ResponseEntity<>(response, HttpStatus.TOO_MANY_REQUESTS);
     }
 }

@@ -5,6 +5,7 @@ import com.jcmc.demo.auth.service.JwtService;
 import com.jcmc.demo.core.util.Logger;
 import com.jcmc.demo.geografia.dao.EstadoRespository;
 import com.jcmc.demo.geografia.model.Estado;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.MDC;
 import org.springframework.cache.annotation.Cacheable;
@@ -30,6 +31,7 @@ public class EstadoService {
 
     // Obtener todos los estados
     @Cacheable(value = "getEstados")
+    @RateLimiter(name = "limitEstados")
     public ArrayList<Estado> getEstados() {
         logger.info("Se regresaron todos los estados");
         return new ArrayList<>(estadoRespository.findAll());

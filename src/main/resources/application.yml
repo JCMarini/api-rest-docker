@@ -31,24 +31,6 @@ spring:
   messages:
     basename: messages
 
-#  cloud:
-#    gateway:
-#      routes:
-#        - id: route1
-#          uri: http://localhost:8080
-#          predicates:
-#            - Path=/api/**
-#          filters:
-#            - StripPrefix=1
-#            - name: RequestRateLimiter
-#              args:
-#                redis-rate-limiter.replenishRate: 2
-#                redis-rate-limiter.burstCapacity: 2
-#                redis-rate-limiter.requestedTokens: 1
-#                key-resolver: "#{@userKeyResolver}"
-#    config:
-#      enabled: false
-
 server:
   port: 8080
   error:
@@ -67,3 +49,23 @@ management:
   health:
     redis:
       enabled: true
+
+resilience4j.ratelimiter:
+  configs:
+    default:
+      limitForPeriod: 1
+      limitRefreshPeriod: 1s
+      timeoutDuration: 100ms
+    backendAConfig:
+      limitForPeriod: 1
+      limitRefreshPeriod: 2s
+      timeoutDuration: 100ms
+  instances:
+    limitPaises:
+      baseConfig: backendAConfig
+    limitEstados:
+      baseConfig: backendAConfig
+    backendB:
+      limitForPeriod: 10
+      limitRefreshPeriod: 1m
+      timeoutDuration: 100ms
