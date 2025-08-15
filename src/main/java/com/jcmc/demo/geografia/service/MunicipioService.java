@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -23,8 +24,10 @@ public class MunicipioService {
     }
 
     // Obtener todos los municipio
-//    @Cacheable(value = "getMunicipios")
-    public Page<Municipio> getMunicipios(int page, int size) {
+    @Cacheable(value = "getMunicipios")
+    public Page<Municipio> getMunicipios(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
         return municipioRepository.findAll(pageable);
     }

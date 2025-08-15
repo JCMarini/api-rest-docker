@@ -1,13 +1,11 @@
 package com.jcmc.demo.geografia.service;
 
-import com.jcmc.demo.auth.model.User;
 import com.jcmc.demo.auth.service.JwtService;
 import com.jcmc.demo.core.util.Logger;
 import com.jcmc.demo.geografia.dao.EstadoRespository;
 import com.jcmc.demo.geografia.model.Estado;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.MDC;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +22,7 @@ public class EstadoService {
     private JwtService jwtService;
 
     // Crear o actualizar un estado
+    @RateLimiter(name = "limitEstados")
     public Estado saveEstado(Estado estado) {
         logger.info("Se guado un nuevo estado : ");
         return estadoRespository.saveEstado(estado);
